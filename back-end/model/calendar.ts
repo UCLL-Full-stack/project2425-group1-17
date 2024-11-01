@@ -2,7 +2,7 @@ import { Appointment } from './appointment';
 
 export class Calendar {
     private id?: number;
-    private time_frame: string;
+    public time_frame: string;
     private appointments: Appointment[];
     private time_frame_start: Date;
 
