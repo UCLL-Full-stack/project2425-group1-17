@@ -6,11 +6,32 @@ import React, { useEffect, useState } from 'react';
 
 const Employees: React.FC = () => {
     const [employees, setEmployees] = useState<Employee[]>([]);
+    const [showModal, setShowModal]= useState<boolean>(false);
+    const [formData, setFormData] = useState({
+        name: '',
+        phone_number: '',
+        hours: 0,
+        client: '',
+    });
 
     const getEmployees = async () => {
         const employees = await EmployeeService.getAllEmployees();
         const json = await employees.json();
         setEmployees(json);
+    };
+
+    const handleAddEmployee = async () => {
+        await EmployeeService.addEmployee(formData);
+        setShowModal(false); // Close modal after adding
+        getEmployees(); // Refresh employees list
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData(prevState => ({
+            ...prevState,
+            [name]: name === 'work_hours' || name === 'current_hours' ? Number(value) : value
+        }));
     };
 
     useEffect(() => {
@@ -31,6 +52,9 @@ const Employees: React.FC = () => {
             <Header />
             <div className="container my-4">
                 <h1 className="text-center mb-4">Employees</h1>
+                <button className="btn btn-primary mb-3" onClick={() => setShowModal(true)}>
+                    Add Employee
+                </button>
                 <div className="table-responsive">
                     <table className="table table-striped table-hover">
                         <thead className="table-dark">
@@ -68,8 +92,51 @@ const Employees: React.FC = () => {
                     </table>
                 </div>
             </div>
+
+            {showModal && (
+                <div className="modal show d-block" tabIndex={-1}>
+                    <div className="modal-dialog">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h5 className="modal-title">Add Employee</h5>
+                                <button type="button" className="btn-close" onClick={() => setShowModal(false)}></button>
+                            </div>
+                            <div className="modal-body">
+                                <form>
+                                    <div className="mb-3">
+                                        <label className="form-label">Name</label>
+                                        <input type="text" className="form-control" name="name" value={formData.name} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Phone Number</label>
+                                        <input type="text" className="form-control" name="phone_number" value={formData.phone_number} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Client</label>
+                                        <input type="text" className="form-control" name="client" value={formData.client} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Hours</label>
+                                        <input type="number" className="form-control" name="hours" value={formData.hours} onChange={handleChange} />
+                                    </div>
+                                </form>
+                            </div>
+                            <div className="modal-footer">
+                                <button type="button" className="btn btn-secondary" onClick={() => setShowModal(false)}>
+                                    Close
+                                </button>
+                                <button type="button" className="btn btn-primary" onClick={handleAddEmployee}>
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
         </>
     );
 };
+            
+ 
 
 export default Employees;
