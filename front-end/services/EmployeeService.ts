@@ -7,7 +7,7 @@ const getAllEmployees = async () => {
     });
 };
 
-const addEmployee = async (employeeData: { name: string; hours: number; client: string; phone_number: string; }) => {
+const addEmployee = async (employeeData: { name: string; phone_number: string; work_hours: number; current_hours: number; client: string;  }) => {
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/employees', {
         method: "POST",
         headers: {

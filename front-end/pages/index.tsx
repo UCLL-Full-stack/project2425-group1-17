@@ -7,7 +7,7 @@ const Home: React.FC = () => {
   return (
     <>
       <Head>
-        <title>Courses</title>
+        <title>Omnis Cura Zorggroep</title>
         <meta name="description" content="Courses app" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -17,7 +17,7 @@ const Home: React.FC = () => {
         <span>
           <Image
             src="/images/logo.png"
-            alt="Courses Logo"
+            alt="Omnis Cura Zorgroep Logo"
             className={styles.vercelLogo}
             width={400}
             height={400}

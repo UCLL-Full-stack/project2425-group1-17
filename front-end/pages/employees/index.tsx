@@ -10,7 +10,8 @@ const Employees: React.FC = () => {
     const [formData, setFormData] = useState({
         name: '',
         phone_number: '',
-        hours: 0,
+        work_hours: 40,
+        current_hours: 0,
         client: '',
     });
 
@@ -112,12 +113,16 @@ const Employees: React.FC = () => {
                                         <input type="text" className="form-control" name="phone_number" value={formData.phone_number} onChange={handleChange} />
                                     </div>
                                     <div className="mb-3">
-                                        <label className="form-label">Client</label>
-                                        <input type="text" className="form-control" name="client" value={formData.client} onChange={handleChange} />
+                                        <label className="form-label">Work Hours</label>
+                                        <input type="number" className="form-control" name="work_hours" value={formData.work_hours} onChange={handleChange} />
                                     </div>
                                     <div className="mb-3">
-                                        <label className="form-label">Hours</label>
-                                        <input type="number" className="form-control" name="hours" value={formData.hours} onChange={handleChange} />
+                                        <label className="form-label">Current Hours</label>
+                                        <input type="number" className="form-control" name="current_hours" value={formData.current_hours} onChange={handleChange} />
+                                    </div>
+                                    <div className="mb-3">
+                                        <label className="form-label">Client</label>
+                                        <input type="text" className="form-control" name="client" value={formData.client} onChange={handleChange} />
                                     </div>
                                 </form>
                             </div>
