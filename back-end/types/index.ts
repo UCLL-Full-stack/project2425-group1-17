@@ -8,8 +8,8 @@ type EmployeeInput = {
     work_hours: number;
     current_hours: number;
     phone_number: string;
-    calendar: Calendar;
-    clients: ClientInput[];
+    calendarId: number;
+    clientIds: number[];
 }
 
 type ClientInput = {    
@@ -17,8 +17,8 @@ type ClientInput = {
     name: string;
     phone_number: string;
     email: string;
-    calendar: Calendar;
-    employee: EmployeeInput[];
+    calendarId: number;
+    employeeIds: number[];
 }
 
 type AppointmentInput = {   
