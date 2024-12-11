@@ -1,20 +1,19 @@
 import { Admin } from '../../model/admin';
 
-test('given: valid values for admin, when: admin is created, then: admin is created with those values', () => {
-    //given
-    const id = 1;
-    const username = 'hans';
-    const password = '123';
+describe('Admin', () => {
+    it('given: valid values for username, when: admin is created, then: admin is created with those values', ()=>{
+        const adminData = {
+            id: 1,
+            username: 'ValiddAdmin',
+            password: 'StongPassword123',
+        };
 
-    //when
-    const admin = new Admin({
-        id: id,
-        username: username,
-        password: password,
+        const admin = new Admin(adminData);
+
+        expect(admin).toBeInstanceOf(Admin);
+        expect(admin.getUsername()).toEqual('ValiddAdmin');
+        expect(admin.getPassword()).toEqual('StongPassword123');
+        expect(admin.getRole()).toEqual("admin");
+        expect(admin.getId()).toEqual(1);
     });
-
-    //then
-    expect(admin.getId()).toEqual(id);
-    expect(admin.getUsername()).toEqual(username);
-    expect(admin.getPassword()).toEqual(password);
-});
+    });
