@@ -26,7 +26,7 @@ export class User{
 
          const validRoles: Role[] =["admin", "employee", "client"];
          if (!validRoles.includes(this.role)){
-             throw new Error(`Role must be one of the following: ${validRoles.join(", ")}`);
+             throw new Error(`Role must be one of the following: admin, employee, client`);
          }
 
         
