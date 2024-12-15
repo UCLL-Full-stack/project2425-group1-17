@@ -1,18 +1,13 @@
+
 import {Admin} from '../model/admin';
+import { User } from '../model/user';
+import adminDb from '../repository/admin.db';
+import userService from './user.service';
 
-export class AdminService{
-    private admins: Admin[] = [];
-
-    create (adminData :{username: string; password: string}): Admin{
-        const admin = new Admin(adminData);
-        this.validateUniqueUsername(admin.getUsername());
-        this.admins.push(admin);
-        return admin;
-    }
-
-    private validateUniqueUsername(username: string){
-        if(this.admins.find(admin => admin.getUsername() === username)){
-            throw new Error('Username already taken');
-        }
-    }
+const createAdmin = (adminData: { username: string; password: string }): User =>{
+    const newAdmin = userService.createUser({ ...adminData, role: 'admin' });
+    return newAdmin;
 }
+
+
+export default {createAdmin};
