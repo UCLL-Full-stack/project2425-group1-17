@@ -10,7 +10,7 @@ export class User{
         this.id = user.id;
         this.username = user.username;
         this.password = user.password;
-        this.role = user.role;
+        this.role = user.role.toLowerCase() as Role;
 
         this.validate();
     }
@@ -23,6 +23,12 @@ export class User{
         if (!this.isPasswordStrong(this.password)) {
             throw new Error('Password must contain uppercase, lowercase, and a number');
         }
+
+         const validRoles: Role[] =["admin", "employee", "client"];
+         if (!validRoles.includes(this.role)){
+             throw new Error(`Role must be one of the following: ${validRoles.join(", ")}`);
+         }
+
         
     }
        
