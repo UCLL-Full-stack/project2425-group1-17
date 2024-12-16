@@ -19,13 +19,28 @@ export class Employee {
         calendar: Calendar;
         clients: Client[];
     }) {
+        this.calendar = employee.calendar;
+    
         this.id = employee.id;
+        this.validateName(employee.name);
         this.name = employee.name;
+        
         this.work_hours = employee.work_hours;
         this.current_hours = employee.current_hours;
         this.phone_number = employee.phone_number;
-        this.calendar = employee.calendar;
+        
         this.clients = employee.clients;
+    }
+
+
+
+    private validateName(name: string): void{
+        if(name.trim().length === 0){
+            throw new Error('Name cannot be empty');
+        }
+        if (!/^[a-zA-Z\s'-]+$/.test(name)) {
+            throw new Error('Name can only contain letters, spaces, hyphens, and apostrophes.');
+        }
     }
 
     getId(): number | undefined {
@@ -35,7 +50,7 @@ export class Employee {
     getName(): string {
         return this.name;
     }
-
+      
     getWork_hours(): number {
         return this.work_hours;
     }
