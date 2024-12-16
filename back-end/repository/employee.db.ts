@@ -18,14 +18,22 @@ const employees: Employee[] = [
                     id: 1,
                     title: 'Team Meeting',
                     startDate: new Date('2024-12-18T10:00:00'),
+<<<<<<< HEAD
                     endDate: new Date('2024-12-19T10:00:00'),
+=======
+                    endDate: new Date('2024-12-18T12:00:00'),
+>>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Discuss project updates.',
                 }),
                 new Appointment({
                     id: 2,
                     title: 'Client Presentation',
                     startDate: new Date('2024-12-20T14:00:00'),
+<<<<<<< HEAD
                     endDate: new Date('2024-12-22T14:00:00'),
+=======
+                    endDate: new Date('2024-12-18T16:00:00'),
+>>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Present new features.',
                 }),
             ],
@@ -66,7 +74,11 @@ const employees: Employee[] = [
                     id: 3,
                     title: 'Workshop',
                     startDate: new Date('2024-12-19T09:00:00'),
+<<<<<<< HEAD
                     endDate:  new Date('2024-12-23T09:00:00'),
+=======
+                    endDate: new Date('2024-12-19T11:00:00'),
+>>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Technical training.',
                 }),
             ],
