@@ -4,41 +4,46 @@ const appointments = [
     new Appointment({
         id: 1,
         title: 'Team Meeting',
-        date: new Date('2024-12-18T10:00:00'),
-        duration: 60,
+        startDate: new Date('2024-12-18T10:00:00'),
+        endDate: new Date('2024-12-19T10:00:00'),
         note: 'Discuss project updates.',
     }),
     new Appointment({
         id: 2,
         title: 'Client Presentation',
-        date: new Date('2024-12-20T14:00:00'),
-        duration: 90,
+        startDate: new Date('2024-12-20T14:00:00'),
+        endDate: new Date('2024-12-22T14:00:00'),
         note: 'Present new features.',
     }),
     new Appointment({
         id: 3,
         title: 'Workshop',
-        date: new Date('2024-12-19T09:00:00'),
-        duration: 120,
+        startDate: new Date('2024-12-19T09:00:00'),
+        endDate:  new Date('2024-12-23T09:00:00'),
         note: 'Technical training.',
     }),
 ];
 
-const createAppointment = ({ title, date, duration, note }: Appointment): Appointment => {
-    const appointment = new Appointment({
-        title,
-        date,
-        duration,
-        note,
+const createAppointment = (appointmentInput: Appointment): Appointment => {
+    const newAppointment = new Appointment({
+        id: appointmentInput.getId(),
+        title: appointmentInput.getTitle(),
+        startDate: appointmentInput.getStartDate(),
+        endDate: appointmentInput.getEndDate(),
+        note: appointmentInput.getNote() || '',
     });
-    appointments.push(appointment);
-    return appointment;
+    appointments.push(newAppointment);
+    return newAppointment;
 };
 
 const getAllAppointments = (): Appointment[] => appointments;
 
-const getAppointmentById = ({ id }: { id: number }): Appointment | null => {
-    return appointments.find((appointment) => appointment.getId() === id) || null;
+const getAppointmentById = (id: number): Appointment | null => {
+    const appointment = appointments.find((appointment) => appointment.getId() === id);
+    if(!appointment) {
+        throw new Error('Appointment not found');
+    }
+    return appointment;
 };
 
 export default {

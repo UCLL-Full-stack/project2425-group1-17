@@ -1,17 +1,24 @@
 import { Calendar } from '../model/calendar';
 import appointmentDb from '../repository/appointment.db';
 import calendarDb from '../repository/calendar.db';
-import { CalendarInput } from '../types';
+import { CalendarInput , AppointmentInput} from '../types';
 
 const createCalendar = ({
     time_frame,
-    appointments: appointmentInput,
+    appointments:appointmentInputs,
     time_frame_start,
 }: CalendarInput): Calendar => {
-    const appointments = appointmentDb.getAppointmentById({ id: appointmentInput.id });
+    const appointments = appointmentInputs.map((input) =>{
 
-    const calendar = new Calendar({ time_frame, appointments, time_frame_start });
-    return calendarDb.createCalendar(calendar);
+        const appointment= appointmentDb.getAppointmentById(input.id!);
+        if(!appointment){
+            throw new Error('Appointment not found');
+        }
+        return appointment;
+    });
+
+    const newCalendar = new Calendar({ time_frame, appointments, time_frame_start });
+    return calendarDb.createCalendar(newCalendar);
 };
 
 export default {

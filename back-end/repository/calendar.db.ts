@@ -9,15 +9,15 @@ const calendars: Calendar[] = [
             new Appointment({
                 id: 1,
                 title: 'Team Meeting',
-                date: new Date('2024-12-18T10:00:00'),
-                duration: 60,
+                startDate: new Date('2024-12-18T10:00:00'),
+                endDate: new Date('2024-12-19T10:00:00'),
                 note: 'Discuss project updates.',
             }),
             new Appointment({
                 id: 2,
                 title: 'Client Presentation',
-                date: new Date('2024-12-20T14:00:00'),
-                duration: 90,
+                startDate: new Date('2024-12-20T14:00:00'),
+                endDate: new Date('2024-12-22T14:00:00'),
                 note: 'Present new features.',
             }),
         ],
@@ -30,8 +30,8 @@ const calendars: Calendar[] = [
             new Appointment({
                 id: 3,
                 title: 'Workshop',
-                date: new Date('2024-12-19T09:00:00'),
-                duration: 120,
+                startDate: new Date('2024-12-19T09:00:00'),
+                endDate:  new Date('2024-12-23T09:00:00'),
                 note: 'Technical training.',
             }),
         ],
@@ -40,20 +40,28 @@ const calendars: Calendar[] = [
 ];
 
 //we maken een nieuwe const aan ipv meteen push omdat we anders vefificatie skippen
-const createCalendar = ({ id, time_frame, time_frame_start }: Calendar): Calendar => {
-    const calendar = new Calendar({
-        id,
-        time_frame,
-        appointments: [],
-        time_frame_start,
+const createCalendar = (calendarInput: Calendar): Calendar => {
+    if (calendars.some((calendar) => calendar.getId() === calendarInput.getId())) {
+        throw new Error('Calendar already exists');
+    }
+    
+    const newCalendar = new Calendar({
+        id: calendarInput.getId(),
+        time_frame: calendarInput.getTime_frame(),
+        appointments: calendarInput.getAppointments(),
+        time_frame_start: calendarInput.getTime_frame_start(),
     });
-    calendars.push(calendar);
-    return calendar;
+    calendars.push(newCalendar);
+    return newCalendar;
 };
 
-// voor nu returned die null maar moet nog geimplementeerd worden
-const getCalendarById = ({ id }: { id: number }): Calendar | null => {
-    return calendars.find((calendar) => calendar.getId() === id) || null;
+
+const getCalendarById = (id: number): Calendar | null => {
+    const calendar = calendars.find((calendar) => calendar.getId() === id);
+    if(!calendar){
+        throw new Error('Calendar not found');
+    }
+    return calendar;
 };
 
 const getAllCalendars = (): Calendar[] => {

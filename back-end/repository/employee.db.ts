@@ -17,15 +17,15 @@ const employees: Employee[] = [
                 new Appointment({
                     id: 1,
                     title: 'Team Meeting',
-                    date: new Date('2024-12-18T10:00:00'),
-                    duration: 60,
+                    startDate: new Date('2024-12-18T10:00:00'),
+                    endDate: new Date('2024-12-19T10:00:00'),
                     note: 'Discuss project updates.',
                 }),
                 new Appointment({
                     id: 2,
                     title: 'Client Presentation',
-                    date: new Date('2024-12-20T14:00:00'),
-                    duration: 90,
+                    startDate: new Date('2024-12-20T14:00:00'),
+                    endDate: new Date('2024-12-22T14:00:00'),
                     note: 'Present new features.',
                 }),
             ],
@@ -65,8 +65,8 @@ const employees: Employee[] = [
                 new Appointment({
                     id: 3,
                     title: 'Workshop',
-                    date: new Date('2024-12-19T09:00:00'),
-                    duration: 120,
+                    startDate: new Date('2024-12-19T09:00:00'),
+                    endDate:  new Date('2024-12-23T09:00:00'),
                     note: 'Technical training.',
                 }),
             ],
@@ -101,23 +101,21 @@ const employees: Employee[] = [
 ];
 
 //we maken een nieuwe const aan ipv meteen push omdat we anders vefificatie skippen
-const createEmployee = ({
-    name,
-    work_hours,
-    current_hours,
-    phone_number,
-    calendar,
-}: Employee): Employee => {
-    const employee = new Employee({
-        name,
-        work_hours,
-        current_hours,
-        phone_number,
-        calendar,
-        clients: [],
+const createEmployee = (employeeInput: Employee): Employee => {
+    if (employees.some((employee) => employee.getId() === employeeInput.getId())) {
+        throw new Error('Employee already exists');
+    }
+    const newEmployee = new Employee({
+        id: employeeInput.getId(),
+        name: employeeInput.getName(),
+        work_hours: employeeInput.getWork_hours(),  
+        current_hours: employeeInput.getCurrent_hours(),
+        phone_number: employeeInput.getPhone_number(),
+        calendar: employeeInput.getCalendar(),
+        clients: employeeInput.getClients(),
     });
-    employees.push(employee);
-    return employee;
+    employees.push(newEmployee);
+    return newEmployee;
 };
 
 const getEmployeeByName = ({ name }: { name: string }): Employee | null => {

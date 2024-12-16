@@ -39,8 +39,8 @@ type ClientInput = {
 type AppointmentInput = {
     id?: number;
     title: string;
-    date: Date;
-    duration: number;
+    startDate: Date;
+    endDate: Date;
     note: string;
 };
 
