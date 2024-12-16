@@ -1,21 +1,41 @@
 export class Appointment {
     readonly id?: number;
     readonly title: string;
-    readonly date: Date;
-    readonly duration: number;
+    readonly startDate: Date;
+    readonly endDate: Date;
     readonly note: string;
 
     constructor(appointment: {
         id?: number;
         title: string;
-        date: Date;
-        duration: number;
+        startDate: Date;
+        endDate: Date;
         note: string;
     }) {
+        if (appointment.title.trim().length === 0) {
+            throw new Error('Title cannot be empty');
+        }
+
+        if (!(appointment.startDate instanceof Date) || isNaN(appointment.startDate.getTime())) {
+            throw new Error('Invalid start date');
+        }
+
+        if (!(appointment.endDate instanceof Date) || isNaN(appointment.endDate.getTime())) {
+            throw new Error('Invalid end date');
+        }
+
+        if (appointment.startDate < new Date()) {
+            throw new Error('Date cannot be in the past');
+        }
+
+        if (appointment.endDate <= appointment.startDate) {
+            throw new Error('End date must be after start date');
+        }
+
         this.id = appointment.id;
         this.title = appointment.title;
-        this.date = appointment.date;
-        this.duration = appointment.duration;
+        this.startDate = appointment.startDate;
+        this.endDate = appointment.endDate;
         this.note = appointment.note;
     }
 
@@ -27,12 +47,12 @@ export class Appointment {
         return this.title;
     }
 
-    getDate(): Date {
-        return this.date;
+    getStartDate(): Date {
+        return this.startDate;
     }
 
-    getDuration(): number {
-        return this.duration;
+    getEndDate(): Date {
+        return this.endDate;
     }
 
     getNote(): string | undefined {
@@ -43,8 +63,8 @@ export class Appointment {
         return (
             this.id === appointment.getId() &&
             this.title === appointment.getTitle() &&
-            this.date === appointment.getDate() &&
-            this.duration === appointment.getDuration() &&
+            this.startDate === appointment.getStartDate() &&
+            this.endDate === appointment.getEndDate() &&
             this.note === appointment.getNote()
         );
     }
