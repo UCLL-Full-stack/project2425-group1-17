@@ -20,22 +20,26 @@ export class Employee {
         clients: Client[];
     }) {
         this.calendar = employee.calendar;
-    
+
         this.id = employee.id;
         this.validateName(employee.name);
         this.name = employee.name;
-        
         this.work_hours = employee.work_hours;
         this.current_hours = employee.current_hours;
+        //this.validatePhoneNumber(employee.phone_number);
         this.phone_number = employee.phone_number;
-        
         this.clients = employee.clients;
     }
 
+    private validatePhoneNumber(phone_number: string): void {
+        const phoneRegex = /^[0][0-9]{8,9}$/; // Starts with '0' and has 9-10 digits
+        if (!phoneRegex.test(phone_number)) {
+            throw new Error('Phone number must be 9 or 10 digits long and start with 0');
+        }
+    }
 
-
-    private validateName(name: string): void{
-        if(name.trim().length === 0){
+    private validateName(name: string): void {
+        if (name.trim().length === 0) {
             throw new Error('Name cannot be empty');
         }
         if (!/^[a-zA-Z\s'-]+$/.test(name)) {
@@ -50,7 +54,7 @@ export class Employee {
     getName(): string {
         return this.name;
     }
-      
+
     getWork_hours(): number {
         return this.work_hours;
     }
