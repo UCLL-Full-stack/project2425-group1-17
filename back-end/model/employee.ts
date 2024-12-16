@@ -2,13 +2,13 @@ import { Calendar } from './calendar';
 import { Client } from './client';
 
 export class Employee {
-    private id?: number;
-    private name: string;
-    private work_hours: number;
-    private current_hours: number;
-    private phone_number: string;
-    private calendar: Calendar;
-    private clients: Client[];
+    readonly id?: number;
+    readonly name: string;
+    readonly work_hours: number;
+    readonly current_hours: number;
+    readonly phone_number: string;
+    readonly calendar: Calendar;
+    readonly clients: Client[];
 
     constructor(employee: {
         id?: number;
@@ -53,5 +53,17 @@ export class Employee {
 
     getClients(): Client[] {
         return this.clients;
+    }
+
+    equals(employee: Employee): boolean {
+        return (
+            this.id === employee.getId() &&
+            this.name === employee.getName() &&
+            this.work_hours === employee.getWork_hours() &&
+            this.current_hours === employee.getCurrent_hours() &&
+            this.phone_number === employee.getPhone_number() &&
+            this.calendar.equals(employee.getCalendar()) &&
+            this.clients.every((client, index) => client.equals(employee.getClients()[index]))
+        );
     }
 }

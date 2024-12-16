@@ -1,10 +1,10 @@
 import { Appointment } from './appointment';
 
 export class Calendar {
-    private id?: number;
-    public time_frame: string;
-    private appointments: Appointment[];
-    private time_frame_start: Date;
+    readonly id?: number;
+    readonly time_frame: string;
+    readonly appointments: Appointment[];
+    readonly time_frame_start: Date;
 
     constructor(calendar: {
         id?: number;
@@ -32,5 +32,16 @@ export class Calendar {
 
     getTime_frame_start(): Date {
         return this.time_frame_start;
+    }
+
+    equals(calendar: Calendar): boolean {
+        return (
+            this.id === calendar.getId() &&
+            this.time_frame === calendar.getTime_frame() &&
+            this.appointments.every((appointment, index) =>
+                appointment.equals(calendar.getAppointments()[index])
+            ) &&
+            this.time_frame_start === calendar.getTime_frame_start()
+        );
     }
 }

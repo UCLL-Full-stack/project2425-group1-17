@@ -5,50 +5,43 @@ type Role = 'admin' | 'employee' | 'client';
 type UserInput = {
     id?: number;
     username: string;
-    password: string,
+    password: string;
     role: Role;
-    
 };
 
+type CalendarInput = {
+    id?: number;
+    time_frame: string;
+    appointments: AppointmentInput[];
+    time_frame_start: Date;
+};
 
 type EmployeeInput = {
-    id? : number;
-    name: string;       
+    id?: number;
+    name: string;
     work_hours: number;
     current_hours: number;
     phone_number: string;
-    role: Role;
-    calendarId: number;
-    clientIds: number[];
+    calendar: CalendarInput;
+    clients: ClientInput[];
 };
 
-type ClientInput = {    
-    id? : number;
+type ClientInput = {
+    id?: number;
     name: string;
     phone_number: string;
-    email: string;
-    calendarId: number;
-    employeeIds: number[];
     town: string;
-    adress: string;
-    houuse_number: number;
+    adres: string;
+    house_number: number;
     postal_code: string;
 };
 
-type AppointmentInput = {   
-    id? : number;
+type AppointmentInput = {
+    id?: number;
     title: string;
     date: Date;
     duration: number;
-    note?: string;
-    clientId: number;
-    employeeId: number;
+    note: string;
 };
 
-export{
-    Role,
-    UserInput,
-    EmployeeInput,
-    ClientInput,
-    AppointmentInput
-}
+export { Role, UserInput, EmployeeInput, ClientInput, AppointmentInput, CalendarInput };
