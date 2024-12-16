@@ -9,7 +9,7 @@ const employees: Employee[] = [
         name: 'Hans Janssens',
         work_hours: 40,
         current_hours: 20,
-        phone_number: '0032123456789',
+        phone_number: '0487562222',
         calendar: new Calendar({
             id: 1,
             time_frame: 'Weekly',
@@ -18,22 +18,14 @@ const employees: Employee[] = [
                     id: 1,
                     title: 'Team Meeting',
                     startDate: new Date('2024-12-18T10:00:00'),
-<<<<<<< HEAD
                     endDate: new Date('2024-12-19T10:00:00'),
-=======
-                    endDate: new Date('2024-12-18T12:00:00'),
->>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Discuss project updates.',
                 }),
                 new Appointment({
                     id: 2,
                     title: 'Client Presentation',
                     startDate: new Date('2024-12-20T14:00:00'),
-<<<<<<< HEAD
                     endDate: new Date('2024-12-22T14:00:00'),
-=======
-                    endDate: new Date('2024-12-18T16:00:00'),
->>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Present new features.',
                 }),
             ],
@@ -43,7 +35,7 @@ const employees: Employee[] = [
             new Client({
                 id: 1,
                 name: 'Marie Dupont',
-                phone_number: '003214567890',
+                phone_number: '0487569586',
                 town: 'Antwerpen',
                 adres: 'Meir',
                 house_number: 12,
@@ -52,7 +44,7 @@ const employees: Employee[] = [
             new Client({
                 id: 2,
                 name: 'Jean Peeters',
-                phone_number: '003214567891',
+                phone_number: '0487563535',
                 town: 'Gent',
                 adres: 'Korenmarkt',
                 house_number: 5,
@@ -65,7 +57,7 @@ const employees: Employee[] = [
         name: 'Katrien Verhoeven',
         work_hours: 35,
         current_hours: 28,
-        phone_number: '0032123456790',
+        phone_number: '0487563935',
         calendar: new Calendar({
             id: 2,
             time_frame: 'Daily',
@@ -74,11 +66,7 @@ const employees: Employee[] = [
                     id: 3,
                     title: 'Workshop',
                     startDate: new Date('2024-12-19T09:00:00'),
-<<<<<<< HEAD
                     endDate:  new Date('2024-12-23T09:00:00'),
-=======
-                    endDate: new Date('2024-12-19T11:00:00'),
->>>>>>> 2285ac39d0ec16d392640101a629e5a6f4f79f68
                     note: 'Technical training.',
                 }),
             ],
@@ -88,7 +76,7 @@ const employees: Employee[] = [
             new Client({
                 id: 3,
                 name: 'Sophie Claes',
-                phone_number: '003214567892',
+                phone_number: '0487563999',
                 town: 'Brugge',
                 adres: 'Markt',
                 house_number: 3,
@@ -101,7 +89,7 @@ const employees: Employee[] = [
         name: 'Pieter De Vries',
         work_hours: 30,
         current_hours: 15,
-        phone_number: '0032123456791',
+        phone_number: '0487563957',
         calendar: new Calendar({
             id: 3,
             time_frame: 'Monthly',

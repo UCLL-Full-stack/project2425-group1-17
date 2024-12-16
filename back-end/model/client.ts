@@ -1,11 +1,11 @@
 export class Client {
-    readonly id?: number;
-    readonly name: string;
-    readonly phone_number: string;
-    readonly town: string;
-    readonly adres: string;
-    readonly house_number: number;
-    readonly postal_code: string;
+    private id?: number;
+    private name: string;
+    private phone_number: string;
+    private town: string;
+    private adres: string;
+    private house_number: number;
+    private postal_code: string;
 
     constructor(client: {
         id?: number;
@@ -38,7 +38,8 @@ export class Client {
     }
 
     private validatePhoneNumber (phone_number:string ): void{
-        if (!/^0\d{8,9}$/.test(phone_number.replace(/\s/g, ''))) {
+        const phoneRegex = /^[0][0-9]{8,9}$/; // Starts with '0' and has 9-10 digits
+        if (!phoneRegex.test(phone_number)) {
             throw new Error('Phone number must be 9 or 10 digits long and start with 0');
         }
     }
@@ -91,17 +92,5 @@ export class Client {
 
     getPostal_code(): string {
         return this.postal_code;
-    }
-
-    equals(client: Client): boolean {
-        return (
-            this.id === client.getId() &&
-            this.name === client.getName() &&
-            this.phone_number === client.getPhone_number() &&
-            this.town === client.getTown() &&
-            this.adres === client.getAdres() &&
-            this.house_number === client.getHouse_number() &&
-            this.postal_code === client.getPostal_code()
-        );
     }
 }
