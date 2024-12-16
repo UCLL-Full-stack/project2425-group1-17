@@ -1,10 +1,14 @@
 import * as dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
-import {userRouter} from './controller/user.routes';
+import { userRouter } from './controller/user.routes';
 import * as bodyParser from 'body-parser';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
+import { employeeRouter } from './controller/employee.routes';
+import { clientRouter } from './controller/client.routes';
+import { calendarRouter } from './controller/calendar.routes';
+import { appointmentRouter } from './controller/appointment.routes';
 //import { employeeRouter } from './controller/employee.routes';
 
 const app = express();
@@ -16,16 +20,19 @@ app.use(bodyParser.json());
 
 app.use('/users', userRouter);
 
-
 // Register the employee router
 //app.use('/employees', employeeRouter);
-
 
 app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
-const swaggerOpts ={
+app.use('/employee', employeeRouter);
+app.use('/client', clientRouter);
+app.use('/calendar', calendarRouter);
+app.use('/appointment', appointmentRouter);
+
+const swaggerOpts = {
     definition: {
         openai: '3.0.0',
         info: {
@@ -33,7 +40,8 @@ const swaggerOpts ={
             version: '1.0.0',
         },
     },
-    apis: ['./controller/*.routes.ts'],};
+    apis: ['./controller/*.routes.ts'],
+};
 
 const swaggerSpec = swaggerJSDoc(swaggerOpts);
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
