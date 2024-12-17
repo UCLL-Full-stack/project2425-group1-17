@@ -47,6 +47,13 @@ export class Employee {
         }
     }
 
+    addClient(client: Client): void {
+        if (this.clients.some((existingClient) => existingClient.getId() === client.getId())) {
+            throw new Error('Client already exists');
+        }
+        this.clients.push(client);
+    }
+
     getId(): number | undefined {
         return this.id;
     }

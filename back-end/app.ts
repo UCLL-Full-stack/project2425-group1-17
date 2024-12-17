@@ -39,6 +39,9 @@ const swaggerOpts = {
             title: 'Courses API',
             version: '1.0.0',
         },
+        components: {
+            schemas: {},
+        }
     },
     apis: ['./controller/*.routes.ts'],
 };

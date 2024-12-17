@@ -18,7 +18,7 @@ const appointments = [
     new Appointment({
         id: 3,
         title: 'Workshop',
-        startDate: new Date('2024-12-19T09:00:00'),
+        startDate: new Date('2024-12-20T09:00:00'),
         endDate:  new Date('2024-12-23T09:00:00'),
         note: 'Technical training.',
     }),

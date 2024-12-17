@@ -59,13 +59,15 @@ export class Appointment {
         return this.note;
     }
 
+
+
     equals(appointment: Appointment): boolean {
         return (
             this.id === appointment.getId() &&
             this.title === appointment.getTitle() &&
             this.startDate === appointment.getStartDate() &&
             this.endDate === appointment.getEndDate() &&
-            this.note === appointment.getNote()
+            this.note === appointment.getNote() 
         );
     }
 }

@@ -14,94 +14,118 @@ export class Calendar {
     }) {
         this.id = calendar.id;
         this.time_frame = calendar.time_frame;
-        this.appointments = calendar.appointments;
         this.time_frame_start = calendar.time_frame_start;
-    }
+        this.appointments = [];
 
-    private validateTimeFrame(time_frame: string): void {
-        const validTimeFrames = ['day', 'week ', 'month'];
-        if (!validTimeFrames.includes(time_frame)) {
-            throw new Error('Invalid time frame. Expected day, week or month.');
+        for (const appointment of calendar.appointments) {
+            this.addAppointment(appointment);
         }
     }
 
-    private validateTimeFrameStart(time_frame_start: Date): void {
-        if (!(time_frame_start instanceof Date) || isNaN(time_frame_start.getTime())) {
-            throw new Error('Invalid date');
-        }
-    }
+    // private validateTimeFrame(time_frame: string): void {
+    //     const validTimeFrames = ['day', 'week ', 'month'];
+    //     if (!validTimeFrames.includes(time_frame)) {
+    //         throw new Error('Invalid time frame. Expected day, week or month.');
+    //     }
+    // }
 
-    private validateAppointments(
-        appointments: Appointment[],
-        time_frame: string,
-        time_frame_start: Date
-    ): void {
-        const time_frame_end = this.calculateTimeFrameEnd(time_frame, time_frame_start);
+    // private validateTimeFrameStart(time_frame_start: Date): void {
+    //     if (!(time_frame_start instanceof Date) || isNaN(time_frame_start.getTime())) {
+    //         throw new Error('Invalid date');
+    //     }
+    // }
 
-        for (let i = 0; i < appointments.length; i++) {
-            const appointment = appointments[i];
-            const appointmentStart = appointment.getStartDate();
-            const appointmentEnd = appointment.getEndDate();
+    // private validateAppointments(
+    //     appointments: Appointment[],
+    //     time_frame: string,
+    //     time_frame_start: Date
+    // ): void {
+    //     const time_frame_end = this.calculateTimeFrameEnd(time_frame, time_frame_start);
 
-            if (appointmentStart < time_frame_start || appointmentEnd > time_frame_end) {
-                throw new Error('Appointment is outside of the calendar time frame');
-            }
+    //     for (let i = 0; i < appointments.length; i++) {
+    //         const appointment = appointments[i];
+    //         const appointmentStart = appointment.getStartDate();
+    //         const appointmentEnd = appointment.getEndDate();
 
-            for (let j = i + 1; j < appointments.length; j++) {
-                if (this.isOverlapping(appointment, appointments[j])) {
-                    throw new Error('Appointments cannot overlap');
-                }
-            }
-        }
-    }
+    //         if (appointmentStart < time_frame_start || appointmentEnd > time_frame_end) {
+    //             throw new Error('Appointment is outside of the calendar time frame');
+    //         }
 
-    private calculateTimeFrameEnd(time_frame: string, time_frame_start: Date): Date {
-        const time_frame_end = new Date(time_frame_start);
-        switch (time_frame) {
-            case 'day':
-                time_frame_end.setDate(time_frame_end.getDate() + 1);
-                break;
-            case 'week':
-                time_frame_end.setDate(time_frame_end.getDate() + 7);
-                break;
-            case 'month':
-                time_frame_end.setMonth(time_frame_end.getMonth() + 1);
-                break;
-        }
-        return time_frame_end;
-    }
+    //         for (let j = i + 1; j < appointments.length; j++) {
+    //             if (this.isOverlapping(appointment, appointments[j])) {
+    //                 throw new Error('Appointments cannot overlap');
+    //             }
+    //         }
+    //     }
+    // }
+
+
+    //if front end logic, then for now its not encessary
+    // private calculateTimeFrameEnd(time_frame: string, time_frame_start: Date): Date {
+    //     const time_frame_end = new Date(time_frame_start);
+    //     switch (time_frame) {
+    //         case 'day':
+    //             time_frame_end.setDate(time_frame_end.getDate() + 1);
+    //             break;
+    //         case 'week':
+    //             time_frame_end.setDate(time_frame_end.getDate() + 7);
+    //             break;
+    //         case 'month':
+    //             time_frame_end.setMonth(time_frame_end.getMonth() + 1);
+    //             break;
+    //     }
+    //     return time_frame_end;
+    // }
 
     private isOverlapping(appointment1: Appointment, appointment2: Appointment): boolean {
-        const start1 = appointment1.getStartDate();
-        const end1 = appointment1.getEndDate();
-        const start2 = appointment2.getStartDate();
-        const end2 = appointment2.getEndDate();
-
-        return (
-            (start1 >= start2 && start1 < end2) ||
-            (end1 > start2 && end1 <= end2) ||
-            (start1 <= start2 && end1 >= end2)
-        );
+        return(
+            (appointment1.getStartDate() >= appointment2.getStartDate() && 
+            appointment1.getStartDate() < appointment2.getEndDate()) ||
+           (appointment1.getEndDate() > appointment2.getStartDate() && 
+            appointment1.getEndDate() <= appointment2.getEndDate()) ||
+           (appointment1.getStartDate() <= appointment2.getStartDate() && 
+            appointment1.getEndDate() >= appointment2.getEndDate())
+       );
+    
     }
 
+
+    //CRUD FOR APPOINTMENT WANT JEMOET APPOINTMENT TOEVOEGEN AAN CALENDAR
     addAppointment(appointment: Appointment): void {
-        const timeFramEnd = this.calculateTimeFrameEnd(this.time_frame, this.time_frame_start);
-        const appointmentStart = appointment.getStartDate();
-        const appointmentEnd = appointment.getEndDate();
 
-        if (appointmentStart < this.time_frame_start || appointmentEnd > timeFramEnd) {
-            throw new Error('Appointment is outside of the calendar time frame');
+       for (const existingAppointment of this.appointments) {
+            if (this.isOverlapping(appointment, existingAppointment)) {
+                throw new Error('Appointments cannot overlap');
+            }
         }
-
-        if (
-            this.appointments.some((existingAppointment) =>
-                this.isOverlapping(existingAppointment, appointment)
-            )
-        ) {
-            throw new Error('Appointments cannot overlap');
-        }
-
         this.appointments.push(appointment);
+    }
+
+    listAppointments(): Appointment[]{
+        return this.appointments;
+    }
+
+    removeAppointment(appointmentId: number): void {
+        const index = this.appointments.findIndex((appointment) => appointment.getId() === appointmentId);
+        if (index === -1) {
+            throw new Error('Appointment not found');
+        }
+        this.appointments.splice(index, 1);
+    }
+
+    updateAppointment(updatedAppointment: Appointment): void{
+        const index = this .appointments.findIndex((appointment) => appointment.getId() === updatedAppointment.getId());
+        if (index === -1){
+            throw new Error("Appointment not found");
+        }
+        const existingAppointment = this.appointments[index];
+        this.appointments.splice(index, 1);
+        try{
+        this.addAppointment(updatedAppointment);}
+        catch(error){
+            this.appointments.splice(index, 0, existingAppointment);
+            throw error;
+        }
     }
 
     getId(): number | undefined {

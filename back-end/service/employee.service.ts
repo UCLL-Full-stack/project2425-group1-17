@@ -1,7 +1,8 @@
+import { Client } from '../model/client';
 import { Employee } from '../model/employee';
 import calendarDb from '../repository/calendar.db';
 import employeeDb from '../repository/employee.db';
-import { EmployeeInput } from '../types';
+import { EmployeeInput, ClientInput } from '../types';
 
 const createEmployee = ({
     
@@ -33,4 +34,23 @@ const createEmployee = ({
     return employeeDb.createEmployee(newEmployee);
 };
 
-export default { createEmployee };
+const getAppointmentForEmployee = ({id} : {id: number}) => {
+    const employee = employeeDb.getEmployeeById({id});
+    if (!employee) {
+        throw new Error('Employee not found');
+    }
+    return employee.getCalendar().getAppointments();
+
+};
+
+const addClientToEmployee = (employeeId: number, client: ClientInput): Employee => {
+    const employee = employeeDb.getEmployeeById({id: employeeId});
+    if (!employee) {
+        throw new Error('Employee not found');
+    }
+    const newClient = new Client(client);
+    employee.addClient(newClient);
+    return employee;
+};
+
+export default { createEmployee , getAppointmentForEmployee, addClientToEmployee};
