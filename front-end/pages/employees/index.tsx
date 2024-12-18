@@ -6,7 +6,7 @@ import Head from 'next/head';
 import React, { useEffect, useState } from 'react';
 
 const Employees: React.FC = () => {
-    const [employees, setEmployees] = useState<Array<Employee>>();
+    const [employees, setEmployees] = useState<Array<Employee>>([]);
 
     //employees hierboven is een state variabele local_employees is een lokale variabele
     //die enkel gekent is in onderste functie
