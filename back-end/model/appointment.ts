@@ -1,16 +1,19 @@
+import { Appointment as AppointmentPrisma } from '@prisma/client';
+import { Calendar } from './calendar';
 export class Appointment {
     readonly id?: number;
     readonly title: string;
     readonly startDate: Date;
     readonly endDate: Date;
-    readonly note: string;
+    readonly note?: string;
+    readonly calendar: Calendar;
 
     constructor(appointment: {
         id?: number;
         title: string;
         startDate: Date;
         endDate: Date;
-        note: string;
+        note?: string;
     }) {
         if (appointment.title.trim().length === 0) {
             throw new Error('Title cannot be empty');
@@ -36,7 +39,8 @@ export class Appointment {
         this.title = appointment.title;
         this.startDate = appointment.startDate;
         this.endDate = appointment.endDate;
-        this.note = appointment.note;
+        this.note = appointment.note ?? '';
+        this.calendar = appointment.calendar;
     }
 
     getId(): number | undefined {
@@ -59,15 +63,23 @@ export class Appointment {
         return this.note;
     }
 
-
-
     equals(appointment: Appointment): boolean {
         return (
             this.id === appointment.getId() &&
             this.title === appointment.getTitle() &&
             this.startDate === appointment.getStartDate() &&
             this.endDate === appointment.getEndDate() &&
-            this.note === appointment.getNote() 
+            this.note === appointment.getNote()
         );
+    }
+
+    static from({ id, title, startDate, endDate, note }: AppointmentPrisma) {
+        return new Appointment({
+            id,
+            title,
+            startDate,
+            endDate,
+            note: note ?? '',
+        });
     }
 }

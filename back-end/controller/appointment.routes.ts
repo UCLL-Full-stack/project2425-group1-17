@@ -4,11 +4,10 @@ import appointmentService from '../service/appointment.service';
 
 const appointmentRouter = express.Router();
 
-appointmentRouter.post('/', (req: Request, res: Response) => {
+appointmentRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const appointment = <AppointmentInput>req.body;
-        const result = appointmentService.createAppointment(appointment);
-        res.status(200).json(result);
+        const appointments = await appointmentService.getAllAppointments();
+        res.status(200).json(appointments);
     } catch (error: any) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
     }
