@@ -59,7 +59,6 @@ export class Calendar {
     //     }
     // }
 
-
     //if front end logic, then for now its not encessary
     // private calculateTimeFrameEnd(time_frame: string, time_frame_start: Date): Date {
     //     const time_frame_end = new Date(time_frame_start);
@@ -78,22 +77,19 @@ export class Calendar {
     // }
 
     private isOverlapping(appointment1: Appointment, appointment2: Appointment): boolean {
-        return(
-            (appointment1.getStartDate() >= appointment2.getStartDate() && 
-            appointment1.getStartDate() < appointment2.getEndDate()) ||
-           (appointment1.getEndDate() > appointment2.getStartDate() && 
-            appointment1.getEndDate() <= appointment2.getEndDate()) ||
-           (appointment1.getStartDate() <= appointment2.getStartDate() && 
-            appointment1.getEndDate() >= appointment2.getEndDate())
-       );
-    
+        return (
+            (appointment1.getStartDate() >= appointment2.getStartDate() &&
+                appointment1.getStartDate() < appointment2.getEndDate()) ||
+            (appointment1.getEndDate() > appointment2.getStartDate() &&
+                appointment1.getEndDate() <= appointment2.getEndDate()) ||
+            (appointment1.getStartDate() <= appointment2.getStartDate() &&
+                appointment1.getEndDate() >= appointment2.getEndDate())
+        );
     }
-
 
     //CRUD FOR APPOINTMENT WANT JEMOET APPOINTMENT TOEVOEGEN AAN CALENDAR
     addAppointment(appointment: Appointment): void {
-
-       for (const existingAppointment of this.appointments) {
+        for (const existingAppointment of this.appointments) {
             if (this.isOverlapping(appointment, existingAppointment)) {
                 throw new Error('Appointments cannot overlap');
             }
@@ -101,28 +97,32 @@ export class Calendar {
         this.appointments.push(appointment);
     }
 
-    listAppointments(): Appointment[]{
+    listAppointments(): Appointment[] {
         return this.appointments;
     }
 
     removeAppointment(appointmentId: number): void {
-        const index = this.appointments.findIndex((appointment) => appointment.getId() === appointmentId);
+        const index = this.appointments.findIndex(
+            (appointment) => appointment.getId() === appointmentId
+        );
         if (index === -1) {
             throw new Error('Appointment not found');
         }
         this.appointments.splice(index, 1);
     }
 
-    updateAppointment(updatedAppointment: Appointment): void{
-        const index = this .appointments.findIndex((appointment) => appointment.getId() === updatedAppointment.getId());
-        if (index === -1){
-            throw new Error("Appointment not found");
+    updateAppointment(updatedAppointment: Appointment): void {
+        const index = this.appointments.findIndex(
+            (appointment) => appointment.getId() === updatedAppointment.getId()
+        );
+        if (index === -1) {
+            throw new Error('Appointment not found');
         }
         const existingAppointment = this.appointments[index];
         this.appointments.splice(index, 1);
-        try{
-        this.addAppointment(updatedAppointment);}
-        catch(error){
+        try {
+            this.addAppointment(updatedAppointment);
+        } catch (error) {
             this.appointments.splice(index, 0, existingAppointment);
             throw error;
         }
