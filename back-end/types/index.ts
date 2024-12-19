@@ -22,7 +22,7 @@ type EmployeeInput = {
     work_hours: number;
     current_hours: number;
     phone_number: string;
-    calendar: CalendarInput;
+    //calendar: CalendarInput;
     clients: ClientInput[];
 };
 

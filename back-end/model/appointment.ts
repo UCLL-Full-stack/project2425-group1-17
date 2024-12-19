@@ -24,9 +24,9 @@ export class Appointment {
             throw new Error('Invalid end date');
         }
 
-        if (appointment.startDate < new Date()) {
-            throw new Error('Date cannot be in the past');
-        }
+        // if (appointment.startDate < new Date()) {
+        //     throw new Error('Date cannot be in the past');
+        // }
 
         if (appointment.endDate <= appointment.startDate) {
             throw new Error('End date must be after start date');
