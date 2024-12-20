@@ -37,17 +37,17 @@ employeeRouter.get('/', async (req: Request, res: Response) => {
     }
 });
 
-employeeRouter.get('/:id/appointments', (req: Request, res: Response, next: NextFunction) => {
-    try{
-        const id = Number(req.params.id);
-        if (isNaN(id)) {
-            throw new Error('Invalid ID');
-        }
-        const result = employeeService.getAppointmentForEmployee({id});
-        res.status(200).json(result);
-    }catch(error: any){
-        res.status(400).json({ status: 'error', errorMessage: error.message });
-    }});
+// employeeRouter.get('/:id/appointments', (req: Request, res: Response, next: NextFunction) => {
+//     try{
+//         const id = Number(req.params.id);
+//         if (isNaN(id)) {
+//             throw new Error('Invalid ID');
+//         }
+//         const result = employeeService.getAppointmentForEmployee({id});
+//         res.status(200).json(result);
+//     }catch(error: any){
+//         res.status(400).json({ status: 'error', errorMessage: error.message });
+//     }});
 
 employeeRouter.post('/:id/clients', (req: Request, res: Response, next: NextFunction) => {
     try{
