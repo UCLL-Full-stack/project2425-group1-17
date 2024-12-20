@@ -1,49 +1,95 @@
+import { ca } from 'date-fns/locale';
 import { Client } from '../model/client';
 import { Employee } from '../model/employee';
 //import calendarDb from '../repository/calendar.db';
 import employeeDb from '../repository/employee.db';
 import { EmployeeInput, ClientInput } from '../types';
+import { Appointment } from '@prisma/client';
 
-const createEmployee = ({
-    
-    name,
-    work_hours,
-    current_hours,
-    phone_number,
-    
-    clients,
-}: EmployeeInput): Employee => {
-    
-    //niet verplicht omdat je weet dat die validatie regels door vorige laag worden gedaan maar volgens regels moeten alle lagen apart kunnen werken dus moet validatie opnieuw doen
-    const newEmployee = new Employee({
-        name,
-        work_hours,
-        current_hours,
-        phone_number,
-        appointments: [],
-        clients: [],
-    });
 
-    return employeeDb.createEmployee(newEmployee);
-};
+const createEmployee = async (employeeInput: EmployeeInput): Promise<Employee> => {
+    try {
+        const newEmployee = new Employee({
+            name: employeeInput.name,
+            work_hours: employeeInput.work_hours,
+            current_hours: employeeInput.current_hours,
+            phone_number: employeeInput.phone_number,
+            appointments: [], // Appointments are added separately
+            clients: (employeeInput.clients || []).map(
+                (clientInput) =>
+                    new Client({
+                        id: clientInput.id,
+                        name: clientInput.name,
+                        phone_number: clientInput.phone_number,
+                        town: clientInput.town,
+                        adres: clientInput.adres,
+                        house_number: clientInput.house_number,
+                        postal_code: clientInput.postal_code,
+                    })
+            ),
+        });
+        return await employeeDb.createEmployee(newEmployee);
 
-const getAppointmentForEmployee = ({id} : {id: number}) => {
-    const employee = employeeDb.getEmployeeById({id});
+        } catch (error) {
+            console.error(error);
+            throw new Error('Failed to create employee');
+        }
+    }
+
+    const getEmployeeByName = async ({name}: {name: string}): Promise<Employee | null> => { 
+        try{
+            return await employeeDb.getEmployeeByName({name});
+        } catch(error){
+            console.error(error);
+            throw new Error('Failed to fetch employee by name');
+        }
+    };
+
+    const getEmployeeById = async ({id}: {id: number}): Promise<Employee | null> => {
+        try {
+            return await employeeDb.getEmployeeById({id});
+        } catch (error) {
+            console.error(error);
+            throw new Error('Failed to fetch employee by id');
+        }
+    };
+
+    const getEmployees = async (): Promise<Employee[]> => {
+        try{
+            return await employeeDb.getAllEmployees();
+        }
+        catch (error){
+            console.error(error);
+            throw new Error('Failed to fetch all employees');
+        }
+    };
+
+
+
+// const getAppointmentForEmployee = async({id} : {id: number}) : Promise<Appointment[]> => {
+//     const employee = await employeeDb.getEmployeeById({id});
+//     if (!employee) {
+//         throw new Error('Employee not found');
+//     }
+//     return employee.getAppointments();
+
+// };
+
+const addClientToEmployee = async(employeeId: number, clientInput: ClientInput): Promise<Employee> => {
+    try{
+    const employee = await employeeDb.getEmployeeById({id: employeeId});
+
     if (!employee) {
         throw new Error('Employee not found');
     }
-    return employee.getAppointments();
-
-};
-
-const addClientToEmployee = (employeeId: number, client: ClientInput): Employee => {
-    const employee = employeeDb.getEmployeeById({id: employeeId});
-    if (!employee) {
-        throw new Error('Employee not found');
-    }
-    const newClient = new Client(client);
+    const newClient = new Client(clientInput);
     employee.addClient(newClient);
-    return employee;
+    const updatedEmployee = await employeeDb.createEmployee(employee);
+    return updatedEmployee;}
+    catch   (error){
+        console.error(error);
+        throw new Error('Failed to add client to employee');
+    }
 };
 
-export default { createEmployee , getAppointmentForEmployee, addClientToEmployee};
+export default { createEmployee , getEmployeeByName, getEmployeeById, getEmployees, addClientToEmployee};

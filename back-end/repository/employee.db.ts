@@ -93,6 +93,6 @@ const getAllEmployees = async (): Promise<Employee[]> => {
 export default {
     createEmployee,
     getEmployeeByName,
-    getAllEmployees,
     getEmployeeById,
+    getAllEmployees,
 };
