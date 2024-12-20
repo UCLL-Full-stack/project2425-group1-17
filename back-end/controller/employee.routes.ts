@@ -17,9 +17,9 @@ employeeRouter.post('/',async (req: Request, res: Response) => {
                 current_hours,
                 phone_number,
                 clients: {
-                    connect: clientsIds?.map((clientId: number) => ({clientId})),
+                    connect: clientsIds?.map((clientId: number) => ({id: clientId})),
                 }, },
-                include: {clients: true},
+                include: {clients: {include: {client:true}}},
             });
         res.status(200).json(result);
     } catch (error: any) {
