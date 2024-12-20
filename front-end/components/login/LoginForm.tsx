@@ -12,7 +12,8 @@ const LoginForm : React.FC = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}
+            className="bg-white shodow-md rounded px-8 pt-6 pb-8 w-96 space-y-4">
             <label>
                 Username:
                 <input

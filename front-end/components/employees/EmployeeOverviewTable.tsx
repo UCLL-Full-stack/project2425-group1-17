@@ -17,7 +17,7 @@ const EmployeeOverviewTable: React.FC<Props> = ({ employees }: Props) => {
                             <th scope="col">Name</th>
                             <th scope="col">Work Hours</th>
                             <th scope="col">Current Hours</th>
-                            <th scope="col">Calendar</th>
+                            {/* <th scope="col">Calendar</th> */}
                             <th scope="col">Clients</th>
                         </tr>
                     </thead>
@@ -28,7 +28,7 @@ const EmployeeOverviewTable: React.FC<Props> = ({ employees }: Props) => {
                                 <td>{employee.name}</td>
                                 <td>{employee.work_hours}</td>
                                 <td>{employee.current_hours}</td>
-                                <td>{employee.calendar.time_frame}</td>
+                                {/* <td>{employee.calendar.time_frame}</td> */}
                                 <td>{employee.clients.map((client) => client.name).join(', ')}</td>
                             </tr>
                         ))}

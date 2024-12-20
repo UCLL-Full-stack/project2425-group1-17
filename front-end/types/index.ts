@@ -1,5 +1,5 @@
 import exp from 'constants';
-import { Calendar } from '../../back-end/model/calendar';
+// import { Calendar } from '../../back-end/model/calendar';
 
 
 export type Admin = {
@@ -14,7 +14,7 @@ export type Client ={
     name: string;
     phone_number: string;
     email: string;
-    calendar: Calendar;
+    //calendar: Calendar;
     employee: Employee[];
 }
 
@@ -22,17 +22,17 @@ export type Employee = {
     id: number;
     name: string;
     work_hours: number;
-    current_hours: number;
+    current_hours?: number;
     phone_number: string;
-    calendar: Calendar;
+    // calendar: Calendar;
     clients: Client[];
 }
 
 export type Appointment = {
     id: number;
     title: string;
-    date: Date;
-    duration: number;
+    startDate : Date;
+    endDate: Date;
     note?: string;
     client: Client;
     employee: Employee;
