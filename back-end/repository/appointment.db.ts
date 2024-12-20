@@ -1,5 +1,6 @@
 import { Appointment } from '../model/appointment';
 import database from '../util/database';
+import { Appointment as AppointmentPrisma}  from '@prisma/client'
 
 // const createAppointment = (appointmentInput: Appointment): Appointment => {
 //     const newAppointment = new Appointment({
@@ -14,8 +15,13 @@ import database from '../util/database';
 // };
 
 const getAllAppointments = async (): Promise<Appointment[]> => {
-    const appointmentsPrisma = await database.appointment.findMany();
-    return appointmentsPrisma.map((appointmentPrisma) => Appointment.from(appointmentPrisma));
+    try{
+        const appointmentsPrisma = await database.appointment.findMany({include: {employee: true}});
+        return appointmentsPrisma.map((appointmentPrisma: AppointmentPrisma) => Appointment.from(appointmentPrisma));
+    } catch (error) {
+        console.error(error);
+        throw new Error('Could not get appointments');
+    }
 };
 
 // const getAppointmentById = (id: number): Appointment | null => {

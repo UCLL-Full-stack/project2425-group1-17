@@ -1,3 +1,5 @@
+import { Client as ClientPrisma } from '@prisma/client';
+
 export class Client {
     readonly id?: number;
     readonly name: string;
@@ -106,5 +108,17 @@ export class Client {
             this.house_number === client.getHouse_number() &&
             this.postal_code === client.getPostal_code()
         );
+    }
+
+    public static from(clientPrisma: ClientPrisma): Client {
+        return new Client({
+            id: clientPrisma.id,
+            name: clientPrisma.name,
+            phone_number: clientPrisma.phone_number,
+            town: clientPrisma.town,
+            adres: clientPrisma.adres,
+            house_number: clientPrisma.house_number,
+            postal_code: clientPrisma.postal_code,
+        });
     }
 }

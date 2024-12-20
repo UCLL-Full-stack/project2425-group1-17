@@ -1,12 +1,15 @@
-import { Appointment as AppointmentPrisma } from '@prisma/client';
-import { Calendar } from './calendar';
+import { Appointment as AppointmentPrisma, Employee as EmployeePrisma, Client as ClientPrisma } from '@prisma/client';
+import { Employee } from './employee';
+import { Client } from './client';
+// import { Calendar } from './calendar';
 export class Appointment {
     readonly id?: number;
     readonly title: string;
     readonly startDate: Date;
     readonly endDate: Date;
     readonly note?: string;
-    readonly calendar: Calendar;
+    
+    // readonly calendar: Calendar;
 
     constructor(appointment: {
         id?: number;
@@ -14,6 +17,8 @@ export class Appointment {
         startDate: Date;
         endDate: Date;
         note?: string;
+        employee?: Employee;
+        client?: Client;
     }) {
         if (appointment.title.trim().length === 0) {
             throw new Error('Title cannot be empty');
@@ -40,7 +45,7 @@ export class Appointment {
         this.startDate = appointment.startDate;
         this.endDate = appointment.endDate;
         this.note = appointment.note ?? '';
-        this.calendar = appointment.calendar;
+        // this.calendar = appointment.calendar;
     }
 
     getId(): number | undefined {
@@ -73,13 +78,18 @@ export class Appointment {
         );
     }
 
-    static from({ id, title, startDate, endDate, note }: AppointmentPrisma) {
+    static from(appointmentPrisma: AppointmentPrisma & {
+        employee?: EmployeePrisma;
+        client?: ClientPrisma;
+    }): Appointment {
         return new Appointment({
-            id,
-            title,
-            startDate,
-            endDate,
-            note: note ?? '',
+            id: appointmentPrisma.id,
+            title: appointmentPrisma.title,
+            startDate: appointmentPrisma.startDate,
+            endDate: appointmentPrisma.endDate,
+            note: appointmentPrisma.note ?? '',
+            employee: appointmentPrisma.employee ? Employee.from(appointmentPrisma.employee) : undefined,
+            client: appointmentPrisma.client ? Client.from(appointmentPrisma.client) : undefined,
         });
     }
 }

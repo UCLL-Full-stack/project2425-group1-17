@@ -1,5 +1,7 @@
-import { Calendar } from './calendar';
+//import { Calendar } from './calendar';
+import { Appointment } from './appointment';
 import { Client } from './client';
+import {Employee as EmployeePrisma, Appointment as AppointmentPrisma, ClientOnEmployee, Client as ClientPrisma} from '@prisma/client';
 
 export class Employee {
     readonly id?: number;
@@ -7,7 +9,8 @@ export class Employee {
     readonly work_hours: number;
     readonly current_hours: number;
     readonly phone_number: string;
-    readonly calendar: Calendar;
+    //readonly calendar: Calendar;
+    readonly appointments: Appointment[]
     readonly clients: Client[];
 
     constructor(employee: {
@@ -16,10 +19,11 @@ export class Employee {
         work_hours: number;
         current_hours: number;
         phone_number: string;
-        calendar: Calendar;
+        appointments: Appointment[];    
+        //calendar: Calendar;
         clients: Client[];
     }) {
-        this.calendar = employee.calendar;
+        //this.calendar = employee.calendar;
 
         this.id = employee.id;
         this.validateName(employee.name);
@@ -27,6 +31,7 @@ export class Employee {
         this.work_hours = employee.work_hours;
         this.current_hours = employee.current_hours;
         //this.validatePhoneNumber(employee.phone_number);
+        this.appointments = employee.appointments;
         this.phone_number = employee.phone_number;
         this.clients = employee.clients;
     }
@@ -54,6 +59,23 @@ export class Employee {
         this.clients.push(client);
     }
 
+    public static from(employeePrisma: EmployeePrisma &{
+        appointments?: AppointmentPrisma[],
+        clients?: (ClientOnEmployee& { client: ClientPrisma })[];
+    }): Employee {
+        return new Employee({
+            id: employeePrisma.id,
+            name: employeePrisma.name,
+            work_hours: employeePrisma.work_hours,
+            current_hours: employeePrisma.current_hours,
+            phone_number: employeePrisma.phone_number,
+            appointments:(employeePrisma.appointments ?? []).map((appointment) =>
+                Appointment.from(appointment)),
+            clients: (employeePrisma.clients ?? []).map((clientRelation) => 
+                Client.from(clientRelation.client)),
+        });
+    }
+
     getId(): number | undefined {
         return this.id;
     }
@@ -69,13 +91,17 @@ export class Employee {
         return this.current_hours;
     }
 
+    getAppointments(): Appointment[] {
+        return this.appointments;
+    }
+
     getPhone_number(): string {
         return this.phone_number;
     }
 
-    getCalendar(): Calendar {
-        return this.calendar;
-    }
+    // getCalendar(): Calendar {
+    //     return this.calendar;
+    // }
 
     getClients(): Client[] {
         return this.clients;
@@ -88,7 +114,7 @@ export class Employee {
             this.work_hours === employee.getWork_hours() &&
             this.current_hours === employee.getCurrent_hours() &&
             this.phone_number === employee.getPhone_number() &&
-            this.calendar.equals(employee.getCalendar()) &&
+            // this.calendar.equals(employee.getCalendar()) &&
             this.clients.every((client, index) => client.equals(employee.getClients()[index]))
         );
     }

@@ -1,4 +1,7 @@
 import {Role} from '../types/index';
+import {User as UserPrisma} from '@prisma/client';
+
+
 
 export class User{
     private id?: number;
@@ -35,6 +38,16 @@ export class User{
     private isPasswordStrong(password: string): boolean {
     return /(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/.test(password);}
 
+
+    public static from(userPrisma: UserPrisma): User {
+        return new User({
+            id: userPrisma.id,
+            username: userPrisma.username,
+            password: userPrisma.password,
+            role: userPrisma.role as Role,
+        });
+    }
+    
     getUsername(): string {
         return this.username;}
 

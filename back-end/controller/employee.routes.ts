@@ -1,13 +1,36 @@
+import { PrismaClient } from '@prisma/client';
 import express, { NextFunction, Request, Response } from 'express';
 import { ClientInput, EmployeeInput } from '../types';
 import employeeService from '../service/employee.service';
 
+const prisma = new PrismaClient();
 const employeeRouter = express.Router();
 
-employeeRouter.post('/', (req: Request, res: Response) => {
+employeeRouter.post('/',async (req: Request, res: Response) => {
+    
+        const {name, work_hours, current_hours, phone_number, clientsIds} = req.body;
+    try{
+        const result = await prisma.employee.create({
+            data: {
+                name,
+                work_hours,
+                current_hours,
+                phone_number,
+                clients: {
+                    connect: clientsIds?.map((clientId: number) => ({clientId})),
+                }, },
+                include: {clients: true},
+            });
+        res.status(200).json(result);
+    } catch (error: any) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
+
+employeeRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const employee = <EmployeeInput>req.body;
-        const result = employeeService.createEmployee(employee);
+        const result = await prisma.employee.findMany({include: {clients: true}});
         res.status(200).json(result);
     } catch (error: any) {
         res.status(400).json({ status: 'error', errorMessage: error.message });

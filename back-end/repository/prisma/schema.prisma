@@ -7,22 +7,10 @@ datasource db {
     url = env("DATABASE_URL")
 }
 
-model Calendar {
-    id                  Int         @id @default(autoincrement())
-    time_frame          String
-    time_frame_start    DateTime
-    appointments        Appointment[]
-    employee            Employee?
-}
-
-model Appointment {
-    id          Int         @id @default(autoincrement())
-    title       String
-    startDate   DateTime
-    endDate     DateTime
-    note        String?
-    calendar    Calendar    @relation(fields: [calendarId], references: [id])
-    calendarId  Int
+enum role {
+    admin
+    employee
+    client
 }
 
 model Employee {
@@ -31,9 +19,32 @@ model Employee {
     work_hours      Int
     current_hours   Int
     phone_number    String
-    calendar        Calendar    @relation(fields: [calendarId], references: [id])
-    calendarId      Int         @unique
-    clients         Client[]
+      
+    userId          Int?        @unique
+    user            User?       @relation(fields: [userId],references: [id] )
+    appointments    Appointment[]
+    clients         ClientOnEmployee[]
+}
+
+model User {
+    id              Int         @id @default(autoincrement())
+    username        String      @unique
+    password        String
+    role            role
+    employee        Employee?
+    client          Client?
+}
+
+model Appointment {
+    id          Int         @id @default(autoincrement())
+    title       String
+    startDate   DateTime
+    endDate     DateTime
+    note        String?
+    employee    Employee? @relation(fields: [employeeId], references:[id])
+    employeeId Int?
+    client Client? @relation(fields: [clientId], references:[id])
+    clientId Int?
 }
 
 model Client {
@@ -44,5 +55,16 @@ model Client {
     adres           String
     house_number    Int
     postal_code     String
-    employees       Employee[]
+    userId          Int?        @unique
+    user            User?       @relation(fields: [userId],references: [id] )
+    appointments    Appointment[]
+    employees       ClientOnEmployee[]
+}
+
+model ClientOnEmployee{
+    employeeId      Int
+    clientId        Int
+    employee        Employee @relation(fields: [employeeId], references: [id])
+    client          Client @relation(fields: [clientId], references: [id])
+    @@id([employeeId, clientId])
 }

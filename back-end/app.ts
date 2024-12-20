@@ -7,7 +7,7 @@ import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { employeeRouter } from './controller/employee.routes';
 import { clientRouter } from './controller/client.routes';
-import { calendarRouter } from './controller/calendar.routes';
+// import { calendarRouter } from './controller/calendar.routes';
 import { appointmentRouter } from './controller/appointment.routes';
 //import { employeeRouter } from './controller/employee.routes';
 
@@ -29,7 +29,7 @@ app.get('/status', (req, res) => {
 
 app.use('/employee', employeeRouter);
 app.use('/client', clientRouter);
-app.use('/calendar', calendarRouter);
+// app.use('/calendar', calendarRouter);
 app.use('/appointment', appointmentRouter);
 
 const swaggerOpts = {
