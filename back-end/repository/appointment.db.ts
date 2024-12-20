@@ -1,23 +1,28 @@
 import { Appointment } from '../model/appointment';
 import database from '../util/database';
-import { Appointment as AppointmentPrisma}  from '@prisma/client'
+import { Appointment as AppointmentPrisma } from '@prisma/client';
 
-// const createAppointment = (appointmentInput: Appointment): Appointment => {
-//     const newAppointment = new Appointment({
-//         id: appointmentInput.getId(),
-//         title: appointmentInput.getTitle(),
-//         startDate: appointmentInput.getStartDate(),
-//         endDate: appointmentInput.getEndDate(),
-//         note: appointmentInput.getNote() || '',
-//     });
-//     appointments.push(newAppointment);
-//     return newAppointment;
-// };
+const createAppointment = async (appointmentInput: Appointment): Promise<Appointment> => {
+    const appointmentPrisma = await database.appointment.create({
+        data: {
+            id: appointmentInput.getId(),
+            title: appointmentInput.getTitle(),
+            startDate: appointmentInput.getStartDate(),
+            endDate: appointmentInput.getEndDate(),
+            note: appointmentInput.getNote() || '',
+        },
+    });
+    return Appointment.from(appointmentPrisma);
+};
 
 const getAllAppointments = async (): Promise<Appointment[]> => {
-    try{
-        const appointmentsPrisma = await database.appointment.findMany({include: {employee: true}});
-        return appointmentsPrisma.map((appointmentPrisma: AppointmentPrisma) => Appointment.from(appointmentPrisma));
+    try {
+        const appointmentsPrisma = await database.appointment.findMany({
+            include: { employee: true },
+        });
+        return appointmentsPrisma.map((appointmentPrisma: AppointmentPrisma) =>
+            Appointment.from(appointmentPrisma)
+        );
     } catch (error) {
         console.error(error);
         throw new Error('Could not get appointments');
@@ -33,7 +38,7 @@ const getAllAppointments = async (): Promise<Appointment[]> => {
 // };
 
 export default {
-    // createAppointment,
+    createAppointment,
     getAllAppointments,
     // getAppointmentById,
 };
