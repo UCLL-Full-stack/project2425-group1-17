@@ -21,7 +21,17 @@ const getAllAppointments = async (): Promise<Appointment[]> => {
     return await appointmentDb.getAllAppointments();
 };
 
+const getAppointmentById = async ({ id }: { id: number }): Promise<Appointment | null> => {
+    try {
+        return await appointmentDb.getAppointmentById({ id });
+    } catch (error) {
+        console.error(error);
+        throw new Error('Failed to fetch appointment by id');
+    }
+};
+
 export default {
     createAppointment,
     getAllAppointments,
+    getAppointmentById,
 };

@@ -23,4 +23,14 @@ appointmentRouter.get('/', async (req: Request, res: Response) => {
     }
 });
 
+appointmentRouter.get('/:id', async (req: Request, res: Response) => {
+    try {
+        const id = Number(req.params.id);
+        const appointment = await appointmentService.getAppointmentById({ id });
+        res.status(200).json(appointment);
+    } catch (error: any) {
+        res.status(400).json({ status: 'error', errorMessage: error.message });
+    }
+});
+
 export { appointmentRouter };

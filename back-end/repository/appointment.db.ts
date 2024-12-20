@@ -1,6 +1,8 @@
 import { Appointment } from '../model/appointment';
 import database from '../util/database';
-import { Appointment as AppointmentPrisma } from '@prisma/client';
+import { Appointment as AppointmentPrisma, PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient();
 
 const createAppointment = async (appointmentInput: Appointment): Promise<Appointment> => {
     const appointmentPrisma = await database.appointment.create({
@@ -29,16 +31,25 @@ const getAllAppointments = async (): Promise<Appointment[]> => {
     }
 };
 
-// const getAppointmentById = (id: number): Appointment | null => {
-//     const appointment = appointments.find((appointment) => appointment.getId() === id);
-//     if (!appointment) {
-//         throw new Error('Appointment not found');
-//     }
-//     return appointment;
-// };
+const getAppointmentById = async ({ id }: { id: number }): Promise<Appointment | null> => {
+    try {
+        const appointmentPrisma = await database.appointment.findUnique({
+            where: { id },
+        });
+
+        if (!appointmentPrisma) {
+            return null;
+        }
+
+        return Appointment.from(appointmentPrisma);
+    } catch (error) {
+        console.error(error);
+        throw new Error('Could not get appointment by id');
+    }
+};
 
 export default {
     createAppointment,
     getAllAppointments,
-    // getAppointmentById,
+    getAppointmentById,
 };
