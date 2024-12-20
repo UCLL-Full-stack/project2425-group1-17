@@ -90,9 +90,25 @@ const getAllEmployees = async (): Promise<Employee[]> => {
     }
 };
 
+
+
+
+const deleteEmployee = async({ id }: { id: number }):Promise<void> =>{
+    try {
+        await prisma.employee.delete({
+                where:{id},
+            })
+
+    }catch(error){
+        throw new Error('Failed to delete employee');
+    }
+};
+
+
 export default {
     createEmployee,
     getEmployeeByName,
     getEmployeeById,
     getAllEmployees,
+    deleteEmployee
 };

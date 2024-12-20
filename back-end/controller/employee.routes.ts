@@ -10,6 +10,10 @@ employeeRouter.post('/',async (req: Request, res: Response) => {
     
         const {name, work_hours, current_hours, phone_number, clientsIds} = req.body;
     try{
+        
+
+
+
         const result = await prisma.employee.create({
             data: {
                 name,
@@ -61,6 +65,21 @@ employeeRouter.post('/:id/clients', (req: Request, res: Response, next: NextFunc
     }catch(error: any){
         res.status(400).json({ status: 'error', errorMessage: error.message });
     }});
+
+employeeRouter.delete('/:id', async (req: Request, res: Response) => {
+    try {
+        const id = parseInt(req.params.id, 10);
+        if (isNaN(id)){
+            throw new Error('Invalid employee ID');
+
+        }
+        await employeeService.deleteEmployee({ id });
+        res.status(200).json({ message: `Deleted successfully.` })
+    }
+    catch(error: any){
+        res.status(400).json({status: 'error', errorMessage: error.message});
+    }
+})
 
 
 export { employeeRouter };

@@ -92,4 +92,20 @@ const addClientToEmployee = async(employeeId: number, clientInput: ClientInput):
     }
 };
 
-export default { createEmployee , getEmployeeByName, getEmployeeById, getEmployees, addClientToEmployee};
+const  deleteEmployee = async({ id }: { id: number }): Promise<void> => {
+    try {
+        const employee = await employeeDb.getEmployeeById({id});
+        if (!employee){
+            throw new Error('Employee not found');
+
+        }
+        await employeeDb.deleteEmployee({id});
+        console.log(`Employee has been deleted successfully.`)
+    }catch(error){
+        console.error(error);
+        throw new Error('Failed to delete employee.');
+    }
+}
+
+
+export default { createEmployee , getEmployeeByName, getEmployeeById, getEmployees, addClientToEmployee, deleteEmployee};

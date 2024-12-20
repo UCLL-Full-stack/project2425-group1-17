@@ -25,7 +25,7 @@ const Employees: React.FC = () => {
         name: string;
         work_hours: number; 
         phone_number: string;
-        clients: {name: string; phone_number: string; town: string; adres: string; house_number: number; postal_code: string;}[];
+        clients: {name: string; phone_number: string; town: string; adres: string; house_number: number; postal_code: string;};
     }) => {
         try{
             await EmployeeService.addEmployee(employeeData);

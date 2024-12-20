@@ -82,7 +82,13 @@ const main = async () => {
             adres: 'hoveniersdreef',
             house_number: 1,
             postal_code: '1234',
-            employees: { connect: { id: employee_1.id } },
+            employees: {
+                create: [
+                    {
+                        employee: { connect: { id: employee_1.id } },
+                    },
+                ],
+            },
         },
     });
 
@@ -94,7 +100,13 @@ const main = async () => {
             adres: 'stationsstraat',
             house_number: 79,
             postal_code: '4566',
-            employees: { connect: { id: employee_1.id } },
+            employees: {
+                create: [
+                    {
+                        employee: { connect: { id: employee_1.id } },
+                    },
+                ],
+            },
         },
     });
 
@@ -106,7 +118,13 @@ const main = async () => {
             adres: 'naamsevest',
             house_number: 10,
             postal_code: '3323',
-            employees: { connect: { id: employee_2.id } },
+            employees: {
+                create: [
+                    {
+                        employee: { connect: { id: employee_2.id } },
+                    },
+                ],
+            },
         },
     });
 };

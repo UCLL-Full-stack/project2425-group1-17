@@ -16,7 +16,8 @@ const EmployeeOverviewTable: React.FC<Props> = ({ employees }: Props) => {
                         <tr>
                             <th scope="col">Name</th>
                             <th scope="col">Work Hours</th>
-                            <th scope="col">Current Hours</th>
+                            <th scope="col">Phone Number</th>
+                            {/* <th scope="col">Current Hours</th> */}
                             {/* <th scope="col">Calendar</th> */}
                             <th scope="col">Clients</th>
                         </tr>
@@ -27,9 +28,13 @@ const EmployeeOverviewTable: React.FC<Props> = ({ employees }: Props) => {
                             <tr key={index}>
                                 <td>{employee.name}</td>
                                 <td>{employee.work_hours}</td>
-                                <td>{employee.current_hours}</td>
+                                <td>{employee.phone_number}</td>
                                 {/* <td>{employee.calendar.time_frame}</td> */}
-                                <td>{employee.clients.map((client) => client.name).join(', ')}</td>
+                                <td>
+                                    
+                                    <ul>
+                                    {employee.clients.map((client) => (<li key={client.id}>{client.name}</li>))}</ul>
+                                    </td>
                             </tr>
                         ))}
                     </tbody>

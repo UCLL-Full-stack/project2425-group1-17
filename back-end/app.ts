@@ -28,7 +28,7 @@ app.get('/status', (req, res) => {
 });
 
 app.use('/employees', employeeRouter);
-app.use('/client', clientRouter);
+app.use('/clients', clientRouter);
 // app.use('/calendar', calendarRouter);
 app.use('/appointment', appointmentRouter);
 

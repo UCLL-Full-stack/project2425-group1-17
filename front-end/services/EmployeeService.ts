@@ -19,6 +19,7 @@ const getEmployeeById = (employeeId: string) => {
 };
 
 const addEmployee = async (employeeData:{name: string; work_hours: number; phone_number:string;  clients: { name: string; phone_number: string; town: string; adres: string; house_number: number; postal_code: string;}[]; }) => {
+    
     return await fetch(process.env.NEXT_PUBLIC_API_URL + '/employees', {
         method: 'POST',
         headers: {

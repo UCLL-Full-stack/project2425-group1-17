@@ -34,18 +34,22 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onClose, onSubmit}) => {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSubmit({name, work_hours: work_hours, phone_number: phone_number, clients: []});
+        onSubmit({name, work_hours: work_hours, phone_number: phone_number, clients : []});
         console.log({name, work_hours, phone_number, clients});
     }
 
 
     return(
         <>
-        <h3>Add Employee</h3>
-        <form onSubmit={handleSubmit}>
-            <label className="form-label">
+        <div className="max-w-lg mx-auto mt-8 p-6 bg-white shadow-lg rounded-lg">
+        <h3 className="text-2xl font-semibold text-gray-700 text-center mb-4">Add Employee</h3>
+
+        <div>
+        <form onSubmit={handleSubmit}  className="space-y-4">
+            <div >
+            <label className="form-label ">
                 Name:
-                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value) }/>
+                <input type="text" name="name" value={name} onChange={(e) => setName(e.target.value)  }/>
             </label>
             <label className="form-label">
                 Work Hours:
@@ -59,9 +63,9 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onClose, onSubmit}) => {
                 Phone Number:
                 <input type="text" name="phone_number" value={phone_number} onChange={(e) => setPhone_number(e.target.value)}/>
             </label>
-            
-            <div className='mb-3'>
-                <h5>Clients</h5>
+            </div>
+            <div>
+                <h5 className="text-lg font-medium text-gray-700 mb-2">Clients</h5>
                 {clients.map((client, index) => (
                     <div key={index} className="border p-2 mb-2">
                     <p>
@@ -91,6 +95,8 @@ const EmployeeForm: React.FC<EmployeeFormProps> = ({ onClose, onSubmit}) => {
             
             <button type="button" onClick={onClose}>Cancel</button>
         </form>
+        </div>
+        </div>
         </>
     );
 

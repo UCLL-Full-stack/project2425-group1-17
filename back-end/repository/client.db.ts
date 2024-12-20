@@ -1,53 +1,68 @@
+import { PrismaClient } from '@prisma/client';
 import { Client } from '../model/client';
 
-const clients: Client[] = [
-    new Client({
-        id: 1,
-        name: 'Marie Dupont',
-        phone_number: '003214567890',
-        town: 'Antwerpen',
-        adres: 'Meir',
-        house_number: 12,
-        postal_code: '2000',
-    }),
-    new Client({
-        id: 2,
-        name: 'Jean Peeters',
-        phone_number: '003214567891',
-        town: 'Gent',
-        adres: 'Korenmarkt',
-        house_number: 5,
-        postal_code: '9000',
-    }),
-];
+const prisma = new PrismaClient();
 
-const createClient = ({
-    name,
-    phone_number,
-    town,
-    adres,
-    house_number,
-    postal_code,
-}: Client): Client => {
-    const client = new Client({
-        name,
-        phone_number,
-        town,
-        adres,
-        house_number,
-        postal_code,
+const createClient = async (client: Client): Promise<Client> => {
+    const createdClient = await prisma.client.create({
+        data: {name: client.getName(),
+        phone_number: client.getPhone_number(),
+        town: client.getTown(),
+        adres: client.getAdres(),
+        house_number: client.getHouse_number(),
+        postal_code: client.getPostal_code(),
+    },
+  
+});
+    return Client.from(createdClient);
+}
+
+const getClientById = async({ id }: { id: number }): Promise<Client | null> => {
+   const client = await prisma.client.findUnique({
+        where: {id},
+});
+    return client ? Client.from(client) : null;
+}
+
+
+
+const updateClient = async ({id}:{id:number},  clientData: Partial<Client>):Promise<Client | null> => {
+   try{
+    const updatedClient = await prisma.client.update({
+        where: {id},
+        data: {
+            name: clientData.getName ? clientData.getName() : undefined,
+            phone_number: clientData.getPhone_number ? clientData.getPhone_number() : undefined,
+            town: clientData.getTown ? clientData.getTown() : undefined,
+            adres: clientData.getAdres ? clientData.getAdres() : undefined,
+            house_number: clientData.getHouse_number ? clientData.getHouse_number() : undefined,
+            postal_code: clientData.getPostal_code ? clientData.getPostal_code() : undefined,
+        }})
+        return Client.from(updatedClient); }
+
+        catch(error)
+        {
+            console.error(error);
+            throw new Error('Failed to update client');
+        }  
+};
+
+const getAllClients = async(): Promise<Client[]> => {
+    const clients = await prisma.client.findMany({
+        include: {
+            employees: {
+                include: {
+                    employee: true,
+                },
+            },
+        },
     });
-    return client;
-};
-
-const getClientById = ({ id }: { id: number }): Client | null => {
-    return clients.find((client) => client.getId() === id) || null;
-};
-
-const getAllClients = (): Client[] => clients;
+    return clients.map(Client.from);
+}
 
 export default {
     createClient,
     getClientById,
+    updateClient,
     getAllClients,
 };

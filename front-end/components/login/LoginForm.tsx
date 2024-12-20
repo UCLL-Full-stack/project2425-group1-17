@@ -12,8 +12,11 @@ const LoginForm : React.FC = () => {
     };
 
     return (
+        <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-400 via-pink-500 to-red-500">
         <form onSubmit={handleSubmit}
             className="bg-white shodow-md rounded px-8 pt-6 pb-8 w-96 space-y-4">
+            
+            <div>
             <label>
                 Username:
                 <input
@@ -21,6 +24,8 @@ const LoginForm : React.FC = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}/>
             </label>
+            </div>
+            <div>
             <label>
                 Password: 
                 <input 
@@ -28,8 +33,11 @@ const LoginForm : React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}/>
             </label>
-            <button type="submit">Login</button>
+            </div>
+            <button type="submit"
+            >Login</button>
         </form>
+        </div>
     
     );
 };
