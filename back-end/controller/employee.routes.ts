@@ -30,7 +30,7 @@ employeeRouter.post('/',async (req: Request, res: Response) => {
 
 employeeRouter.get('/', async (req: Request, res: Response) => {
     try {
-        const result = await prisma.employee.findMany({include: {clients: true}});
+        const result = await prisma.employee.findMany({include: {clients: {include: {client:true}}}});
         res.status(200).json(result);
     } catch (error: any) {
         res.status(400).json({ status: 'error', errorMessage: error.message });
