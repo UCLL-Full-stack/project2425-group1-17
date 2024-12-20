@@ -12,7 +12,7 @@ const createEmployee = async (employeeInput: EmployeeInput): Promise<Employee> =
         const newEmployee = new Employee({
             name: employeeInput.name,
             work_hours: employeeInput.work_hours,
-            current_hours: employeeInput.current_hours,
+            current_hours: employeeInput.current_hours ?? 0,
             phone_number: employeeInput.phone_number,
             appointments: [], // Appointments are added separately
             clients: (employeeInput.clients || []).map(

@@ -27,7 +27,7 @@ app.get('/status', (req, res) => {
     res.json({ message: 'Back-end is running...' });
 });
 
-app.use('/employee', employeeRouter);
+app.use('/employees', employeeRouter);
 app.use('/client', clientRouter);
 // app.use('/calendar', calendarRouter);
 app.use('/appointment', appointmentRouter);

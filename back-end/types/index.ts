@@ -20,9 +20,9 @@ type EmployeeInput = {
     id?: number;
     name: string;
     work_hours: number;
-    current_hours: number;
+    current_hours?: number;
     phone_number: string;
-    calendar: CalendarInput;
+    //calendar: CalendarInput;
     clients: ClientInput[];
 };
 
